@@ -395,8 +395,8 @@
                 fontSize: 11,
               },
               labelLine: {
-                length: 0,
-                length: 0
+                length: 5,
+                length2: 8
               },
               data: [
                 {value: 20, name: '云南\n10%'},
@@ -842,6 +842,7 @@
         color: #0bace6;
         background-image: url(./assets/images/line.png);
         background-repeat: no-repeat;
+        background-size: contain;
       }
 
       .data {
@@ -897,8 +898,6 @@
     }
   }
 
-
-
   // Chrome 中文最小 12px 调整
   @media screen and (max-width: 1600px) {
     .top {
@@ -907,6 +906,10 @@
       }
 
       .province {
+
+        i {
+          // transform: scale(0.9);
+        }
 
         ul.sup {
           li {
