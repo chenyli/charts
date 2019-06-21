@@ -50,7 +50,7 @@
               <span class="icon-dot"></span>
             </div>
             <!-- 区域滚动 -->
-            <iscroll-view class="scroll-view">
+            <iscroll-view class="scroll-view" :options="{mouseWheel: true}">
               <div class="row">
                 <span class="col">20190701</span>
                 <span class="col">北京市昌平区建材城西路金燕龙写字楼</span>
@@ -149,6 +149,25 @@
       <div class="point panel">
         <div class="inner">
           <h3>点位分布统计</h3>
+          <div class="chart">
+            <div class="pie" ref="pie" id="pie"></div>
+            <div class="data">
+              <div class="item">
+                <h4>120,899</h4>
+                <span>
+                  <i class="icon-dot" style="color: #ed3f35"></i>
+                  点位总数
+                </span>
+              </div>
+              <div class="item">
+                <h4>248</h4>
+                <span>
+                  <i class="icon-dot" style="color: #eacf19"></i>
+                  本月新增
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -174,12 +193,45 @@
     <div class="column">
       <!-- 订单 -->
       <div class="order panel">
-        
+        <div class="inner">
+          <!-- 筛选 -->
+          <div class="filter">
+            <a href="javascript::" class="active">365天</a>
+            <a href="javascript::">90天</a>
+            <a href="javascript::">30天</a>
+            <a href="javascript::">24小时</a>
+          </div>
+          <!-- 数据 -->
+          <div class="data">
+            <div class="item">
+              <h4>20,301,987</h4>
+              <span>
+                <i class="icon-dot" style="color: #ed3f35;"></i>
+                订单量
+              </span>
+            </div>
+            <div class="item">
+              <h4>99,834</h4>
+              <span>
+                <i class="icon-dot" style="color: #eacf19;"></i>
+                订单量
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- 销售额 -->
       <div class="sales panel">
         <div class="inner">
-          <h3>销售额统计</h3>
+          <div class="caption">
+            <h3>销售额统计</h3>
+            <a href="javascript:;" class="active">年</a>
+            <a href="javascript:;">季</a>
+            <a href="javascript:;">月</a>
+            <a href="javascript:;">周</a>
+          </div>
+          
+
         </div>
       </div>
       <!-- 渠道&季度 -->
@@ -187,6 +239,36 @@
         <div class="channel panel">
           <div class="inner">
             <h3>渠道分布</h3>
+            <div class="data">
+              <div class="item">
+                <h4>39 <small>%</small></h4>
+                <span>
+                  <i class="icon-plane"></i>
+                  机场
+                </span>
+              </div>
+              <div class="item">
+                <h4>28 <small>%</small></h4>
+                <span>
+                  <i class="icon-bag"></i>
+                  商场
+                </span>
+              </div>
+              <div class="item">
+                <h4>20 <small>%</small></h4>
+                <span>
+                  <i class="icon-train"></i>
+                  地铁
+                </span>
+              </div>
+              <div class="item">
+                <h4>13 <small>%</small></h4>
+                <span>
+                  <i class="icon-bus"></i>
+                  火车站
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="quarter panel">
@@ -198,7 +280,76 @@
       <!-- 排行榜 -->
       <div class="top panel">
         <div class="inner">
-          <h3>全国热榜</h3>
+          <div class="all">
+            <h3>全国热榜</h3>
+            <ul>
+              <li>
+                <i class="icon-cup1" style="color: #d93f36;"></i>
+                可爱多
+              </li>
+              <li>
+                <i class="icon-cup2" style="color: #68d8fe;"></i>
+                娃哈啥
+              </li>
+              <li>
+                <i class="icon-cup3" style="color: #4c9bfd;"></i>
+                喜之郎
+              </li>
+            </ul>
+          </div>
+          <div class="province">
+            <h3>各省热销 <i class="date">近30日</i></h3>
+            <div class="data">
+              <ul class="sup">
+                <li class="active">
+                  <span>北京</span>
+                  <span>25,179</span>
+                </li>
+                <li>
+                  <span>河北</span>
+                  <span>23,252</span>
+                </li>
+                <li>
+                  <span>上海</span>
+                  <span>20,760</span>
+                </li>
+                <li>
+                  <span>江苏</span>
+                  <span>23,252</span>
+                </li>
+                <li>
+                  <span>山东</span>
+                  <span>20,760</span>
+                </li>
+              </ul>
+              <ul class="sub">
+                <li>
+                  <span>可爱多</span>
+                  <span>9,086</span>
+                </li>
+                <li>
+                  <span>娃哈哈</span>
+                  <span>8,341</span>
+                </li>
+                <li>
+                  <span>喜之郎</span>
+                  <span>7,467</span>
+                </li>
+                <li>
+                  <span>八喜</span>
+                  <span>6,080</span>
+                </li>
+                <li>
+                  <span>小洋人</span>
+                  <span>6,724</span>
+                </li>
+                <li>
+                  <span>好多鱼</span>
+                  <span>2,170</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -206,25 +357,75 @@
 </template>
 
 <script>
-  // 根据视口宽度计算 html 字号大小
+  // 导入 echarts 图表库
+  import echarts from 'echarts'
+
   export default {
     methods: {
+      // 根据视口宽度计算 html 字号大小
       setFont() {
         // 计算浏览器宽度
-        const doc = document.documentElement
-        const docWidth = doc.clientWidth
+        let doc = document.documentElement
+        let docWidth = doc.clientWidth
         // 限制边界
         if(docWidth < 1024) docWidth = 1024
         if(docWidth > 1920) docWidth = 1920
         // 设置 html 字号大小cons
         doc.style.fontSize = docWidth / 80 + 'px'
+      },
+
+      // 点位分布统计
+      pointChart() {
+        const pie = echarts.init(this.$refs.pie)
+
+        const option = {
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          calculable: true,
+          series: [
+            {
+              name: '点位分布',
+              type:'pie',
+              radius: ['10%', '70%'],
+              center: ['48%', '50%'],
+              roseType: 'radius',
+              label: {
+                fontSize: 11,
+              },
+              labelLine: {
+                length: 0,
+                length: 0
+              },
+              data: [
+                {value: 20, name: '云南\n10%'},
+                {value: 26, name: '北京\n17%'},
+                {value: 24, name: '山东\n21%'},
+                {value: 25, name: '河北\n19%'},
+                {value: 20, name: '江苏\n30%'},
+                {value: 25, name: '浙江\n22%'},
+                {value: 30, name: '四川\n18%'},
+                {value: 27, name: '湖北\n27%'}
+              ]
+            }
+          ]
+        }
+
+        pie.setOption(option)
       }
+
     },
     created() {
+      // 设置 html 字号
       this.setFont()
+      // 根据窗口变化设置 html 定号
       window.addEventListener('resize', () => {
         this.setFont()
       })
+    },
+    mounted() {
+      this.pointChart();
     }
   }
 </script>
@@ -392,7 +593,7 @@
       }
 
       &:nth-child(3) {
-        width: 3rem;
+        // width: 3.2rem;
       }    
     }
   }
@@ -400,6 +601,40 @@
   // 点位
   .point {
     height: 14.167rem;
+
+    .chart {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    .pie {
+      width: 12rem;
+      height: 9.667rem;
+      margin-left: -0.4rem;
+    }
+
+    .data {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 7rem;
+      padding: 1.5rem 1.25rem;
+      box-sizing: border-box;
+      background-image: url(./assets/images/rect.png);
+      background-size: cover;
+    }
+
+    h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1.167rem;
+      color: #fff;
+    }
+
+    span {
+      display: block;
+      color: #4c9bfd;
+      font-size: 0.667rem;
+    }
   }
 
   // 地图
@@ -435,11 +670,79 @@
   // 订单
   .order {
     height: 6.167rem;
+
+    .filter {
+      display: flex;
+
+      a {
+        display: block;
+        height: 0.75rem;
+        line-height: 1;
+        padding: 0 0.75rem;
+        color: #1950c4;
+        font-size: 0.75rem;
+        border-right: 0.083rem solid #00f2f1;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &.active {
+          color: #fff;
+          font-size: 0.833rem;
+        }
+      }
+    }
+
+    .data {
+      display: flex;
+      margin-top: 0.833rem;
+    }
+
+    .item:first-child {
+      margin-right: 5.167rem;
+    }
+
+    h4 {
+      font-size: 1.167rem;
+      color: #fff;
+      margin-bottom: 0.417rem;
+    }
+
+    span {
+      display: block;
+      color: #4c9bfd;
+      font-size: 0.667rem;
+    }
   }
 
   // 销售额
   .sales {
     height: 10.333rem;
+
+    .caption {
+      display: flex;
+      line-height: 1;
+    }
+
+    h3 {
+      height: 0.75rem;
+      padding-right: 0.75rem;
+      border-right: 0.083rem solid #00f2f1;
+    }
+
+    a {
+      padding: 0.167rem;
+      font-size: 0.667rem;
+      margin: -0.125rem 0 0 0.875rem;
+      border-radius: 0.125rem;
+      color: #0bace6;
+
+      &.active {
+        background-color: #4c9bfd;
+        color: #fff;
+      }
+    }
   }
 
   // 渠道&季度
@@ -455,10 +758,175 @@
   // 渠道
   .channel {
     margin-right: 0.833rem;
+    
+    .data {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: space-between;
+    }
+
+    .item {
+      width: 50%;
+      margin-top: .85rem;
+
+      &:nth-child(2n) {
+        text-align: right;
+      }
+    }
+
+    h4 {
+      color: #fff;
+      font-size: 1.333rem;
+    }
+
+    small {
+      font-size: 50%;
+    }
+
+    span {
+      display: block;
+      color: #4c9bfd;
+      font-size: 0.583rem;
+    }
   }
 
   // 榜单
   .top {
-    height: 11.8rem
+    height: 11.8rem;
+
+    .inner {
+      display: flex;
+    }
+
+    .all {
+      display: flex;
+      flex-direction: column;
+      width: 6.25rem;
+      color: #4c9bfd;
+      font-size: 0.667rem;
+      vertical-align: middle;
+
+      ul {
+        padding-left: 0.5rem;
+        margin-top: 0.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+
+      li {
+        overflow: hidden;
+      }
+
+      [class^="icon-"] {
+        font-size: 2rem;
+        vertical-align: middle;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .province {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+
+      i {
+        padding: 0 0.5rem;
+        margin-top: 0.208rem;
+        float: right;
+        font-style: normal;
+        font-size: 0.583rem;
+        color: #0bace6;
+        background-image: url(./assets/images/line.png);
+        background-repeat: no-repeat;
+      }
+
+      .data {
+        flex: 1;
+        display: flex;
+        margin-top: 0.6rem;
+      }
+
+      ul {
+        flex: 1;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+
+        li {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        span {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        &.sup {
+          font-size: 0.583rem;
+
+          li {
+            color: #4995f4;
+            padding: 0.5rem;
+
+            &:hover, &.active {
+              color: #a3c6f2;
+              background-color: rgba(10, 67, 188, .2);
+            }
+          }
+        }
+
+        &.sub {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          font-size: 0.5rem;
+          background-color: rgba(10, 67, 188, .2);
+
+          li {
+            color: #52ffff;
+            padding: 0.417rem 0.6rem;
+          }
+        }
+      }
+    }
+  }
+
+
+
+  // Chrome 中文最小 12px 调整
+  @media screen and (max-width: 1600px) {
+    .top {
+      span {
+        transform: scale(0.9);
+      }
+
+      .province {
+
+        ul.sup {
+          li {
+            padding: 0.4rem 0.5rem;
+          }
+        }
+
+        ul.sub {
+
+          li {
+            padding: 0.23rem 0.5rem;
+          }
+        }
+      }
+    }
+
   }
 </style>
+
+
+
+
+
