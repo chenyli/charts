@@ -40,7 +40,7 @@
           <!-- Tab切换 -->
           <div class="tabs">
             <a href="javascript:;" @click="setMarquee('marquee', 0)" :class="{active: tabIndex == 0}">异常设备监控</a>
-            <a href="javascript:;" @click="setMarquee('marquee', 1)" :class="{active: tabIndex == 1}">故障设备监控</a>
+            <a href="javascript:;" @click="setMarquee('marquee1', 1)" :class="{active: tabIndex == 1}">故障设备监控</a>
           </div>
           <div class="content" v-show="tabIndex == 0">
             <div class="head">
@@ -153,7 +153,7 @@
               <span class="icon-dot"></span>
             </div>
             <!-- 区域滚动 -->
-            <div class="marquee-wrap">
+            <div class="marquee-view">
               <div class="marquee" ref="marquee1">
                 <div class="row">
                   <span class="col">20190701</span>
@@ -315,6 +315,11 @@
       </div>
     </div>
     <div class="column">
+      <!-- 网页时钟 -->
+      <div class="clock">
+        <i class="icon-clock"></i>
+        <span>{{now}}</span>
+      </div>
       <!-- 订单 -->
       <div class="order panel">
         <div class="inner">
@@ -473,7 +478,7 @@
                 </li>
               </ul>
               <ul class="sub">
-                <li v-for="hot in hotData">
+                <li :key="key" v-for="(hot, key) in hotData">
                   <span>{{hot.name}}</span>
                   <span>{{hot.num}} <s class="icon-up"></s></span>
                 </li>
@@ -532,23 +537,13 @@
             [43, 73, 62, 54, 91, 54, 84, 43, 86, 43, 54, 53],
             [32, 54, 34, 87, 32, 45, 62, 68, 93, 54, 54, 24]
           ]
-        }
+        },
+        now: '2019-06-24 14:50:23'
       }
     },
     computed: {
-      computedOrderData: function () {
+      computedOrderData() {
         return this.orderData[this.orderIndex]
-      }
-    },
-    watch: {
-      tabIndex: function () {
-
-        const el = $(this.$refs['marquee'])
-
-        el.css('transform', 'translateY(0)')
-
-        const h = el.height()
-        console.log(h)
       }
     },
     methods: {
@@ -572,21 +567,27 @@
         }, ms)
       },
 
-      setMarquee(ref, index) {
+      async setMarquee(ref, index) {
         this.tabIndex = index
 
         const el = $(this.$refs[ref])
 
+        await this.$nextTick()
+
+        const h = el.attr('data-height') || el.height()
+
         el.css('transform', 'translateY(0)')
 
-        const h = el.height()
+        if(!el.attr('data-height')) {
+          el.attr('data-height', h)
+          const childs = el.children().clone()
+          el.append(childs)
+        }
 
-        const childs = el.children().clone()
-
-        el.append(childs)
-
-        el.css('transform', 'translateY(' + -h + 'px)')
-
+        setTimeout(() => {
+          el.css('transform', 'translateY(' + -h + 'px)')
+        })
+      
         el.on('webkitTransitionEnd', () => {
           el.css({
             transition: 'none',
@@ -1095,8 +1096,6 @@
           return res
         }
 
-        // const color = ['#a6c84c', '#ffa022', '#46bee9']
-
         const series = [
           {
             type: 'lines',
@@ -1200,6 +1199,7 @@
           visualMap: { //图例值控制
             min: 0,
             max: 10000,
+            itemHeight: 100,
             calculable: true,
             show: true,
             color: ['#f44336', '#fc9700', '#ffde00', '#ffde00', '#00eaff'],
@@ -1264,6 +1264,11 @@
       this.loop(3000, (i) => {
         this.hotTab(i % 5)
       })
+
+      setInterval(() => {
+        const date = new Date()
+        this.now = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+      }, 1000)
     }
   }
 </script>
@@ -1283,6 +1288,7 @@
 
   .column {
     flex: 3;
+    position: relative;
 
     &:nth-child(2) {
       flex: 4;
@@ -1883,6 +1889,20 @@
         }
       }
     }
+  }
+
+  .clock {
+
+    i {
+      margin-right: 5px;
+      font-size: 0.833rem;
+    }
+
+    position: absolute;
+    top: -1.5rem;
+    right: 1.667rem;
+    font-size: 0.833rem;
+    color: #0bace6;
   }
 
   // Chrome 中文最小 12px 调整
