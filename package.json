@@ -11,6 +11,7 @@
     "core-js": "^2.6.5",
     "echarts": "^4.2.1",
     "iscroll": "^5.2.0",
+    "jquery": "^3.4.1",
     "normalize.css": "^8.0.1",
     "vue": "^2.6.10",
     "vue-iscroll-view": "^1.0.3"

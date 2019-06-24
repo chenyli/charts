@@ -7,10 +7,10 @@ import './assets/fonts.less'
 import App from './App.vue'
 
 // 区域滚动
-import IScrollView from 'vue-iscroll-view'
-import IScroll from 'iscroll'
+// import IScrollView from 'vue-iscroll-view'
+// import IScroll from 'iscroll'
 
-Vue.use(IScrollView, IScroll)
+// Vue.use(IScrollView, IScroll)
 
 Vue.config.productionTip = false
 
